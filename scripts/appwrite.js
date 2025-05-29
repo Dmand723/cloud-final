@@ -1,4 +1,4 @@
-import { Client, Databases } from "appwrite";
+import { Client, Databases, ID } from "appwrite";
 
 // Initialize Appwrite client
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
@@ -51,5 +51,26 @@ async function deleteNote(noteId = "") {
     return error;
   }
 }
+async function addNote(data = {}) {
+  const note = {
+    title: data.title || "",
+    text: data.text || "",
+    color: data.color || "#FFE082",
+    x: data.x || 0,
+    y: data.y || 0,
+  };
+  try {
+    const res = await databases.createDocument(
+      databaseId,
+      collectionId,
+      ID.unique(),
+      note
+    );
+    return res;
+  } catch (error) {
+    console.log("Error creating document", error);
+    return error;
+  }
+}
 
-export { getAllNotes, updateNotePos, deleteNote };
+export { getAllNotes, updateNotePos, deleteNote, addNote };

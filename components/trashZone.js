@@ -16,7 +16,6 @@ export default function TrashZone({ id, children }) {
         position: "fixed",
         right: 50,
         bottom: 50,
-
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

@@ -20,8 +20,12 @@
 } */
 @layer utilities {
   .thumb-tack {
-    @apply absolute top-1 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full z-20 shadow-md cursor-grab;
-    background: radial-gradient(circle at 8px 8px, #e74c3c 80%, #b03a2e 100%);
+    @apply absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full z-20 shadow-md cursor-grab;
+    background: radial-gradient(circle at 8px 8px, #2bf616 80%, #b03a2e 100%);
+  }
+  .thumb-tack-add {
+    @apply absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full z-20 shadow-md;
+    background: radial-gradient(circle at 8px 8px, #2bf616 80%, #b03a2e 100%);
   }
   .sticky-note {
     @apply decoration-0 text-black block h-[10em] w-[10em] shadow-lg;

@@ -1,5 +1,6 @@
 "use client";
 
+import { RiStickyNoteAddFill } from "react-icons/ri";
 import StickyNote from "@/components/stickyNote";
 import TrashZone from "@/components/trashZone";
 import { getAllNotes, updateNotePos, deleteNote } from "@/scripts/appwrite";
@@ -9,9 +10,11 @@ import {
   restrictToParentElement,
   restrictToWindowEdges,
 } from "@dnd-kit/modifiers";
+import AddNote from "@/components/addNote";
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
+  const [addingNote, setAddingNote] = useState(false);
 
   useEffect(() => {
     getAllNotes().then(setNotes);
@@ -59,9 +62,25 @@ export default function Home() {
       });
     }
   }
+  function updateNotes(newNote) {
+    setNotes((prevNotes) => [...prevNotes, newNote]);
+  }
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh" }}>
+    <div className="relative min-h-screen">
+      <div
+        className="w-20 h-20 border-4 border-black rounded-full flex 
+      items-center justify-center fixed left-5 top-5 bg-white shadow-lg 
+      cursor-pointer"
+        onClick={() => {
+          setAddingNote(true);
+        }}
+      >
+        <RiStickyNoteAddFill size={50} />
+      </div>
+      {addingNote && (
+        <AddNote setAddingNote={setAddingNote} update={updateNotes} />
+      )}
       <DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
         {Array.isArray(notes) &&
           notes.map((note) => (
@@ -73,7 +92,7 @@ export default function Home() {
               position={{ x: note.x || 0, y: note.y || 0 }}
               background={note.color || "#FFE082"}
             />
-          ))}{" "}
+          ))}
         <TrashZone id="droppable-zone"></TrashZone>{" "}
         <DragOverlay modifiers={[restrictToWindowEdges]}></DragOverlay>
       </DndContext>
