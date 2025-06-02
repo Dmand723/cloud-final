@@ -6,10 +6,7 @@ import TrashZone from "@/components/trashZone";
 import { getAllNotes, updateNotePos, deleteNote } from "@/scripts/appwrite";
 import { useState, useEffect } from "react";
 import { DndContext, pointerWithin, DragOverlay } from "@dnd-kit/core";
-import {
-  restrictToParentElement,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import AddNote from "@/components/addNote";
 
 export default function Home() {
@@ -65,6 +62,17 @@ export default function Home() {
   function updateNotes(newNote) {
     setNotes((prevNotes) => [...prevNotes, newNote]);
   }
+  function updateCurnetNotes(updatedNote, noteId) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => {
+        if (note.$id === noteId) {
+          return { $id: noteId, ...updatedNote };
+        } else {
+          return note;
+        }
+      })
+    );
+  }
 
   return (
     <div className="relative min-h-screen">
@@ -83,17 +91,19 @@ export default function Home() {
       )}
       <DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
         {Array.isArray(notes) &&
-          notes.map((note) => (
-            <StickyNote
-              key={note.$id}
-              id={note.$id}
-              title={note.title}
-              text={note.text}
-              position={{ x: note.x || 0, y: note.y || 0 }}
-              background={note.color || "#FFE082"}
-            />
-          ))}
-        <TrashZone id="droppable-zone"></TrashZone>{" "}
+          notes
+            .filter((note) => note && note.$id) // Only valid notes with $id
+            .map((note) => (
+              <StickyNote
+                key={note.$id}
+                id={note.$id}
+                text={note.text}
+                position={{ x: note.x || 0, y: note.y || 0 }}
+                background={note.color || "#FFE082"}
+                update={updateCurnetNotes}
+              />
+            ))}
+        <TrashZone id="droppable-zone"></TrashZone>
         <DragOverlay modifiers={[restrictToWindowEdges]}></DragOverlay>
       </DndContext>
     </div>

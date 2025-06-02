@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #2e2c2c;
+  --foreground: #423d3d;
 }
 
 @theme inline {
@@ -12,12 +12,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
 @layer utilities {
   .thumb-tack {
     @apply absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full z-20 shadow-md cursor-grab;
@@ -33,6 +27,9 @@
 }
 .droppable-zone {
   z-index: 0;
+}
+.text-font {
+  font-family: "Segoe Print";
 }
 
 body {

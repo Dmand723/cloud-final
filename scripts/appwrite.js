@@ -38,6 +38,22 @@ async function updateNotePos(noteId = "", x = 0.0, y = 0.0) {
     return "error";
   }
 }
+
+async function updateNote(noteId, data) {
+  try {
+    const res = await databases.updateDocument(
+      databaseId,
+      collectionId,
+      noteId,
+      data
+    );
+    return res;
+  } catch (error) {
+    console.log("Error updating document", error);
+    return error;
+  }
+}
+
 async function deleteNote(noteId = "") {
   try {
     const res = await databases.deleteDocument(
@@ -51,9 +67,8 @@ async function deleteNote(noteId = "") {
     return error;
   }
 }
-async function addNote(data = {}) {
+async function addNote(data = {}, noteId) {
   const note = {
-    title: data.title || "",
     text: data.text || "",
     color: data.color || "#FFE082",
     x: data.x || 0,
@@ -63,9 +78,10 @@ async function addNote(data = {}) {
     const res = await databases.createDocument(
       databaseId,
       collectionId,
-      ID.unique(),
+      noteId,
       note
     );
+
     return res;
   } catch (error) {
     console.log("Error creating document", error);
@@ -73,4 +89,4 @@ async function addNote(data = {}) {
   }
 }
 
-export { getAllNotes, updateNotePos, deleteNote, addNote };
+export { getAllNotes, updateNotePos, updateNote, deleteNote, addNote };

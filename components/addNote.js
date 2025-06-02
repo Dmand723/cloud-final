@@ -2,9 +2,9 @@
 import { useRef, useState } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 import { addNote } from "@/scripts/appwrite";
+import { ID } from "appwrite";
 
 export default function AddNote({ setAddingNote, update }) {
-  const titleRef = useRef("");
   const textRef = useRef("");
   const parentRef = useRef(null);
 
@@ -22,16 +22,16 @@ export default function AddNote({ setAddingNote, update }) {
   }
   function handleCreateNote() {
     const rect = getPos();
+    const newId = ID.unique();
     const data = {
-      title: titleRef.current.value || "",
       text: textRef.current.value || "",
       color: curColor,
       x: rect.x,
       y: rect.y,
     };
-    addNote(data);
+    addNote(data, newId);
     setAddingNote(false);
-    update(data);
+    update({ $id: newId, ...data });
   }
   return (
     <div
@@ -48,17 +48,12 @@ export default function AddNote({ setAddingNote, update }) {
       <div className="sticky-note relative">
         <div className="thumb-tack-add" />
         <div className="decoration-0 text-blacs block h-[10em] w-[10em] p-[1em] relative">
-          <input
-            type="text"
-            placeholder="Title"
-            className="font-bold block"
-            ref={titleRef}
-          />
-          <input
-            type="text"
+          <textarea
             placeholder="Text"
-            className="font-normal block"
+            className="font-normal block w-full resize-none break-words whitespace-pre-wrap text-font"
             ref={textRef}
+            rows={5}
+            maxLength={64}
           />
           {/* Color squares */}
           <div className="absolute bottom-2 right-2 flex gap-1">
