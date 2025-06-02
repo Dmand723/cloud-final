@@ -54,6 +54,7 @@ export default function AddNote({ setAddingNote, update }) {
             ref={textRef}
             rows={5}
             maxLength={64}
+            autoFocus
           />
           {/* Color squares */}
           <div className="absolute bottom-2 right-2 flex gap-1">

@@ -61,6 +61,7 @@ export default function StickyNote({ id, text, position, background, update }) {
                 defaultValue={text}
                 rows={5}
                 maxLength={64}
+                autoFocus
               />
               {/* Color squares */}
               <div className="absolute bottom-2 right-2 flex gap-1">
